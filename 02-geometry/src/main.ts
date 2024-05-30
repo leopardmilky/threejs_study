@@ -1,3 +1,4 @@
+import { OrbitControls } from 'three/examples/jsm/Addons.js'
 import './style.css'
 import * as THREE from "three"
 
@@ -21,6 +22,7 @@ class App {
     this.setupCamera()
     this.setupLight()
     this.setupModels()
+    this.setupControls()
     this.setupEvents()
   }
 
@@ -66,6 +68,10 @@ class App {
     this.scene.add(group);
   }
 
+  private setupControls() {
+    new OrbitControls(this.camera!, this.domApp! as HTMLElement);
+  }
+
   private setupEvents() {
     window.onresize = this.resize.bind(this)
     this.resize()
@@ -89,12 +95,12 @@ class App {
   private update(time: number) {
     time *= 0.001 // ms -> s
     
-    const cube = this.cube
+    // const cube = this.cube
     // const cube = this.scene.getObjectByName("myModel");
-    if(cube) {
-      cube.rotation.x = time
-      cube.rotation.y = time
-    }
+    // if(cube) {
+    //   cube.rotation.x = time
+    //   cube.rotation.y = time
+    // }
   }
 
   private render(time: number) {
