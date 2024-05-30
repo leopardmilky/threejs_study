@@ -42,10 +42,28 @@ class App {
   }
 
   private setupModels() {
-    const geometry = new THREE.BoxGeometry(1, 1, 1)
-    const material = new THREE.MeshPhongMaterial({ color: 0x44aa88 })
-    this.cube = new THREE.Mesh(geometry, material)
-    this.scene.add(this.cube)
+    const meshMaterial = new THREE.MeshPhongMaterial({
+      color: 0x156289,
+      flatShading: true, side: THREE.DoubleSide,
+      transparent: true, opacity: .75
+    });
+
+    const lineMaterial = new THREE.LineBasicMaterial({
+      color: 0xffffff,
+      transparent: true, opacity: 0.8
+    });
+
+    const geometry = new THREE.BoxGeometry(1, 1, 1);
+
+    const mesh = new THREE.Mesh(geometry, meshMaterial);
+
+    const line = new THREE.LineSegments(geometry, lineMaterial);
+
+    const group = new THREE.Group();
+    group.name = "myModel";
+    group.add(mesh, line);
+
+    this.scene.add(group);
   }
 
   private setupEvents() {
@@ -72,6 +90,7 @@ class App {
     time *= 0.001 // ms -> s
     
     const cube = this.cube
+    // const cube = this.scene.getObjectByName("myModel");
     if(cube) {
       cube.rotation.x = time
       cube.rotation.y = time
