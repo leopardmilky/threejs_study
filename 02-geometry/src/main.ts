@@ -700,7 +700,6 @@ class App {
     // const geometryHelper = new OctahedronGeometryHelper();
     // const geometryHelper = new DodecahedronGeometryHelper();
     const geometryHelper = new TetrahedronGeometryHelper();
-    // ??
 
     const createModel = () => {
       const geometry = geometryHelper.createGeometry();
