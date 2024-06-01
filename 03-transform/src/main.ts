@@ -6,7 +6,6 @@ class App {
   private domApp: Element;
   private scene: THREE.Scene;
   private camera?: THREE.PerspectiveCamera;
-  private cube?: THREE.Mesh;
 
   constructor() {
     console.log("three.js~~");
@@ -42,10 +41,7 @@ class App {
   }
 
   private setupModels() {
-    const geometry = new THREE.BoxGeometry(1, 1, 1);
-    const material = new THREE.MeshPhongMaterial({color: 0x44aa88});
-    this.cube = new THREE.Mesh(geometry, material);
-    this.scene.add(this.cube);
+
   }
 
   private setupEvents() {
@@ -70,12 +66,6 @@ class App {
 
   private update(time: number) {
     time *= 0.001 // ms -> s
-
-    const cube = this.cube;
-    if(cube) {
-      cube.rotation.x = time;
-      cube.rotation.y = time;
-    }
   }
 
   private render(time: number) {
