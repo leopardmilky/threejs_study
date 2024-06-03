@@ -1,3 +1,4 @@
+import { OrbitControls } from 'three/examples/jsm/Addons.js';
 import './style.css';
 import * as THREE from 'three';
 
@@ -28,7 +29,9 @@ class App {
     const height = this.domApp.clientHeight;
 
     this.camera = new THREE.PerspectiveCamera(75, width/height, 0.1, 100);
-    this.camera.position.z = 2;
+    this.camera.position.z = 20;
+
+    new OrbitControls(this.camera, this.domApp as HTMLElement);
   }
 
   private setupLight() {
@@ -41,7 +44,19 @@ class App {
   }
 
   private setupModels() {
+    const geoBox = new THREE.BoxGeometry(1);
+    const material = new THREE.MeshStandardMaterial();
+    const box = new THREE.Mesh(geoBox, material);
 
+    // box.position.x = 2;
+    box.position.set(0, 2, 0);
+    box.rotation.x = THREE.MathUtils.degToRad(45);
+    box.scale.set(0.5, 0.5, 0.5);
+
+    this.scene.add(box);
+
+    const axesOfscene = new THREE.AxesHelper(5);
+    this.scene.add(axesOfscene);
   }
 
   private setupEvents() {
