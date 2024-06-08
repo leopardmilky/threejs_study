@@ -1,12 +1,13 @@
+import { OrbitControls } from 'three/examples/jsm/Addons.js'
 import './style.css'
 import * as THREE from "three"
+import GUI from 'three/examples/jsm/libs/lil-gui.module.min.js'
 
 class App {
   private domApp: Element
   private renderer: THREE.WebGLRenderer
   private scene: THREE.Scene
   private camera?: THREE.PerspectiveCamera
-  private cube?: THREE.Mesh 
 
   constructor() {
     console.log('Hello three.js')
@@ -29,8 +30,10 @@ class App {
     const width = domApp.clientWidth
     const height = domApp.clientHeight
     
-    this.camera = new THREE.PerspectiveCamera(75, width/height, 0.1, 100)
-    this.camera.position.z = 2
+    this.camera = new THREE.PerspectiveCamera(75, width/height, 0.1, 100);
+    this.camera.position.z = 4;
+
+    new OrbitControls(this.camera, this.domApp as HTMLElement);
   }
 
   private setupLight() {
@@ -41,11 +44,75 @@ class App {
     this.scene.add(light)
   }
 
+  // private setupModels() {
+    // const geometry = new THREE.SphereGeometry();
+    // geometry.deleteAttribute("uv");
+    // const circle = new THREE.TextureLoader().load("./circle.png");
+    // const material = new THREE.PointsMaterial({
+    //   color: 0xff0000,  // 색상 이름으로도 지정 가능. (ex: "green", "#ffff00")
+    //   size: 5,
+    //   sizeAttenuation: true,
+    //   map: circle,
+    //   alphaTest: 0.5
+    // });
+    // const points = new THREE.Points(geometry, material);
+    // this.scene.add(points);
+
+    // const gui = new GUI();
+    // gui.add(material, "size", 0.1, 10, 0.01);
+  // }
+
+  // private setupModels() {
+  //   const vertices = [
+  //     -1, 1, 0,
+  //     1, 1, 0,
+  //     -1, -1, 0,
+  //     1, -1, 0,
+  //   ];
+
+  //   const geometry = new THREE.BufferGeometry();
+
+  //   geometry.setAttribute("position", new THREE.Float32BufferAttribute(vertices, 3));
+
+  //   // const material = new THREE.LineBasicMaterial({
+  //   //   color: 0xffff00
+  //   // });
+  //   const material = new THREE.LineDashedMaterial({
+  //     color: 0xffff00,
+  //     dashSize: 0.2,
+  //     gapSize: 0.1,
+  //     scale: 1
+  //   });
+
+  //   // const line = new THREE.Line(geometry, material);
+  //   // const line = new THREE.LineLoop(geometry, material);
+  //   const line = new THREE.LineSegments(geometry, material);
+  //   line.computeLineDistances();
+  //   this.scene.add(line);
+  // }
+
   private setupModels() {
-    const geometry = new THREE.BoxGeometry(1, 1, 1)
-    const material = new THREE.MeshPhongMaterial({ color: 0x44aa88 })
-    this.cube = new THREE.Mesh(geometry, material)
-    this.scene.add(this.cube)
+    const material = new THREE.MeshBasicMaterial({
+      color: 0xffffff,
+      wireframe: false,
+
+      visible: true,
+      transparent: false,
+      opacity: 1,
+      depthTest: true,
+      depthWrite: true,
+      side: THREE.FrontSide,
+    });
+
+    const geomCylinder = new THREE.CylinderGeometry(0.6, 0.9, 1.2, 64, 1);
+    const cylinder = new THREE.Mesh(geomCylinder, material);
+    cylinder.position.x = -1;
+    this.scene.add(cylinder);
+
+    const geomTorusknot = new THREE.TorusKnotGeometry(0.4, 0.18, 128, 64);
+    const torusknot = new THREE.Mesh(geomTorusknot, material);
+    torusknot.position.x = 1;
+    this.scene.add(torusknot);
   }
 
   private setupEvents() {
@@ -70,12 +137,6 @@ class App {
 
   private update(time: number) {
     time *= 0.001 // ms -> s
-    
-    const cube = this.cube
-    if(cube) {
-      cube.rotation.x = time
-      cube.rotation.y = time
-    }
   }
 
   private render(time: number) {
